@@ -67,7 +67,6 @@ def query_results(request):
 	if request.session['users_query'] != []:
 		results = results.filter(dev_ID_id__username__in=request.session['users_query'])
 
-		
 	if request.session['projects_select'] != []:
 		results = results.filter(project_ID_id__in=request.session['projects_select'])
 	
