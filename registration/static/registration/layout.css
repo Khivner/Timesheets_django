@@ -1,0 +1,35 @@
+#form_container{
+	position: absolute;
+    width:255px;
+    height:120px;
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    margin: 0 auto;
+    padding-top: 200px;
+}
+
+#button_div{
+	width: 52px;
+	margin: 0 auto;
+}
+
+input{
+	border-radius: 2px;
+}
+#form_container_signup{
+	position: absolute;
+    width:500px;
+    height:400px;
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    margin: 0 auto;
+    padding-top: 100px;
+}

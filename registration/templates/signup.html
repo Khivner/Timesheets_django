@@ -1,0 +1,24 @@
+{% extends 'one_column_base.html' %}
+
+{% block banner %}
+    <li class="selected"><a href="{% url 'login' %}">Log In</a></li>
+{% endblock %}
+
+{% block content %}
+<div id="form_container_signup">
+<h2>Sign up</h2>
+	<form method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<div class="pushdown"><button type="submit" class="btn btn-primary">Sign Up</button></div>
+	</form>
+
+	<p>Already a member? Click <a href="{%url 'login' %}"><u>here</u></a> to log in!</p>
+</div>
+{% endblock %}
+
+
+
+
+
+

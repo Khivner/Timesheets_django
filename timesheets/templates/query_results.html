@@ -1,0 +1,30 @@
+		{% extends 'one_column_base.html' %}
+
+            {% block content %}
+            <table cellspacing="0">
+            <tr class="border_bottom">
+            	<td>Date</td>
+            	<td>&nbsp;Developer&nbsp;</td>
+            	<td>&nbsp;Project&nbsp;</td>
+            	<td>&nbsp;Items Complete&nbsp;</td>
+                  <td>Time Spent</td>
+            </tr>
+            {% for entry in results %}
+            <tr>
+                  <td align="center">{{ entry.entry_date|date:"m/d/y" }}&nbsp;</td>
+                  <td align="center">{{ entry.dev_ID.username }}</td>
+                  <td align="center">{{ entry.project_ID.project_name }}</td>
+                  <td align="center">{{ entry.items_complete }}</td>
+                  <td align="center">{{ entry.time_spent }}</td>
+            </tr>
+            {% endfor %}
+            <tr class="border_top">
+                  <td>Total:</td>
+            	<td align="center"></td>
+                  <td align="center"></td>
+                  <td align="center">{{ total_items.items_complete__sum }}</td>
+                  <td align="center">{{ total_time.time_spent__sum }}</td>
+            </tr>
+
+            </table>
+            {% endblock %}

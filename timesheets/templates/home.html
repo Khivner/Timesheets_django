@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<title>Time Sheets App</title>
+{% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles2.css' %}">
+	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script type="text/javascript" src="{% static 'js/jquery-ui.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/calendar.js' %}"></script>
+	
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+</head>
+
+<body>
+<div class="wrapper width">
+  <div class="top">
+  	<div class="welcome">Welcome back {{ request.user.username }}</div>
+  </div>
+  
+  <ul class="navigation">
+  	<li><a href="{% url 'home' %}" title="Home" class="float-left">Time Sheet Manager</a></li>
+  	<li><a href="{% url 'logout' %}" title="logout" class="float-right">Log Out</a></li>
+    <li><a href="{% url 'timesheet_entry' %}" title="New Entry" class="float-right">New Entry</a></li>
+    
+  	{% if "AdminUsers" in grouplist %}
+  	<li><a href="{% url 'timesheet_query' %}" title="Timesheet Query" class="float-right">Timesheet Query</a></li>
+    <li><a href="{% url 'create_project' %}" title="New Project" class="float-right">New Project</a></li>
+  	{% endif %}
+	
+    <li><a href="{% url 'home' %}" title="Home" class="float-right">Home</a></li>
+    <div class="clear"></div>
+  </ul>
+  
+  <div class="body-wrapper">
+	<div id="left-content" class="user-content">
+		<section id="content">
+
+	    <article>
+			<h2>Recent Entries</h2>
+			<table cellspacing="0">
+            <tr class="border_bottom">
+            	<td>Date</td>
+            	<td>&nbsp;Project&nbsp;</td>
+            	<td>&nbsp;Items Complete&nbsp;</td>
+              <td>&nbsp;Time Spent&nbsp;</td>
+            </tr>
+			
+			{% for entry in entrylist %}
+            <tr>
+                  <td>{{ entry.entry_date|date:"m/d/y" }}&nbsp;</td>
+                  <td align="center">{{ entry.project_ID.project_name }}</td>
+                  <td align="center">{{ entry.items_complete }}</td>
+                  <td align="center">{{ entry.time_spent }}</td>
+            </tr>
+			{% endfor %}
+			</table>
+		</article>
+        </section>
+        
+        <div class="clear"></div>
+    </div>
+    <div class="content-spacer"></div>
+    <div id="right-content" class="user-content">
+		<section id="content">
+	    <article>
+	    <h2>Upcoming Deadlines</h2>
+	    
+		</article>
+        </section>
+        
+        <div class="clear"></div>
+    </div>
+  </div>
+</div> 
+</body>
+
+</html>

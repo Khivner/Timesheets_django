@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>My Time Sheets App</title>
+
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'registration/css/reset.css' %}">
+    <link rel="stylesheet" href="{% static 'registration/css/styles.css' %}">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<script type="text/javascript" src="{% static 'registration/js/jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'registration/js/slider.js' %}"></script>
+<script type="text/javascript" src="{% static 'registration/js/superfish.js' %}"></script>
+<script type="text/javascript" src="{% static 'registration/js/custom.js' %}"></script>
+
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+
+<!--
+deiform, a free CSS web template by ZyPOP (zypopwebtemplates.com/)
+
+Download: http://zypopwebtemplates.com/
+
+License: Creative Commons Attribution
+//-->
+</head>
+<body>
+<div id="container" class="width">
+
+    <header> 
+	<div class="width">
+
+    		<h1><a href="/">Time Sheets</a></h1>
+
+		<nav>
+	
+    			<ul class="sf-menu dropdown">			
+        			{% block banner %}
+                    {% endblock %}
+       			</ul>
+
+			
+			<div class="clear"></div>
+    		</nav>
+       	</div>
+
+	<div class="clear"></div>
+
+       
+    </header>
+    <div>&nbsp;</div>
+    <div id="body" class="width">
+		<section id="content" class="one-column">
+
+
+	    <article>
+				
+			{% block content %}
+
+            {% endblock %}
+			
+		</article>
+        </section>
+    	
+        <div class="clear"></div>
+    </div>
+</div>
+
+    <footer>
+        <div class="footer-content width">This page was created using a template from  <a href="http://zypopwebtemplates.com/" title="ZyPOP">http://zypopwebtemplates.com/</a>.</div>
+    </footer>
+</body>
+</html>
