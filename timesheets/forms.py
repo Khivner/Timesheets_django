@@ -16,7 +16,7 @@ class timesheet_entry_create(forms.Form):
 
 class timesheet_query_form(forms.Form):
 	users_query = forms.ModelMultipleChoiceField(queryset=User.objects.all().order_by('username'), label='Users')
-	projects_select = forms.MultipleChoiceField(choices=project_query, label='Users')
+	projects_select = forms.MultipleChoiceField(choices=project_query, label='Projects')
 	start_time_query = forms.DateField(initial=datetime.date.today().strftime('%m/%d/%Y'))
 	end_time_query = forms.DateField(initial=datetime.date.today().strftime('%m/%d/%Y'))
 
