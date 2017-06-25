@@ -4,12 +4,25 @@ from .forms import timesheet_entry_create, timesheet_query_form
 from .models import Devs_Time_Reports
 from django.db.models import Sum
 import datetime
-import projectmanager
+from projectmanager.models import Projects
 
 def Check_Admin_Request(User):
 	if "AdminUsers" in User.groups.all().values_list('name', flat=True):
 		return True
 	return False
+
+def getProjects():
+	return [(project.pk, project.client +': '+project.project_name) for project in Projects.objects.all()]
+
+def emptystr_to_none(val):
+	try:
+		check = int(val)
+		if check == 0:
+			return None
+		return check
+	except ValueError:
+		return None
+
 
 @login_required(login_url='login')
 def home(request):
@@ -22,19 +35,19 @@ def home(request):
 def timesheet_entry(request):
 	grouplist = [group.name for group in request.user.groups.all()]
 	if request.method == "POST":
-		form = timesheet_entry_create(request.POST)
+		form = timesheet_entry_create(request.POST, project_choices=getProjects())
 
 		if form.is_valid():
 			total_post_time = datetime.timedelta(hours=int(request.POST['time_spent_hours']), minutes=int(request.POST['time_spent_min']))
 			timesheet = Devs_Time_Reports(
 				dev_ID=request.user, 
-				project_ID= projectmanager.models.Projects.objects.get(pk=request.POST['projectname']), 
+				project_ID= Projects.objects.get(pk=request.POST['projectname']), 
 				time_spent=total_post_time, 
-				items_complete=request.POST['items_complete'])
+				items_complete=emptystr_to_none(request.POST['items_complete']))
 			timesheet.save()
 			return redirect('home')
 	else:
-		form = timesheet_entry_create()
+		form = timesheet_entry_create(project_choices=getProjects())
 
 	return render(request, 'timesheet_entry.html', {'form': form, 'grouplist':grouplist})
 
@@ -44,7 +57,7 @@ def timesheet_entry(request):
 def timesheet_query(request):
 	grouplist = [group.name for group in request.user.groups.all()]
 	if request.method == "POST":
-		form = timesheet_query_form(request.POST)
+		form = timesheet_query_form(request.POST, project_choices=getProjects())
 
 		if form.is_valid():
 			request.session['users_query'] = [name.username for name in form.cleaned_data['users_query']]
@@ -54,7 +67,7 @@ def timesheet_query(request):
 
 			return redirect('query_results')
 	else:
-		form = timesheet_query_form()
+		form = timesheet_query_form(project_choices=getProjects())
 
 	return render(request, 'timesheet_query.html', {'form': form, 'grouplist':grouplist})
 
