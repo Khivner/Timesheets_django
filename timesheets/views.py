@@ -5,15 +5,19 @@ from .models import Devs_Time_Reports
 from django.db.models import Sum
 import datetime
 from projectmanager.models import Projects
+from .visualizations import HoursPieChart
 
+#checks if user is an Admin
 def Check_Admin_Request(User):
 	if "AdminUsers" in User.groups.all().values_list('name', flat=True):
 		return True
 	return False
 
+#query to grab list of projects
 def getProjects():
 	return [(project.pk, project.client +': '+project.project_name) for project in Projects.objects.all()]
 
+#converts empty str and 0 values to None value
 def emptystr_to_none(val):
 	try:
 		check = int(val)
@@ -22,7 +26,6 @@ def emptystr_to_none(val):
 		return check
 	except ValueError:
 		return None
-
 
 @login_required(login_url='login')
 def home(request):
@@ -76,12 +79,21 @@ def timesheet_query(request):
 def query_results(request):
 	grouplist = [group.name for group in request.user.groups.all()]
 	results = Devs_Time_Reports.objects.all()
+	empty_project = []
 
 	if request.session['users_query'] != []:
 		results = results.filter(dev_ID_id__username__in=request.session['users_query'])
 
 	if request.session['projects_select'] != []:
 		results = results.filter(project_ID_id__in=request.session['projects_select'])
+
+		#filters out all of the empty projects from projects selected
+		for projectid in request.session['projects_select']:
+			try:
+				results.filter(project_ID_id=projectid)[0]
+			except IndexError:
+				empty_project.append(projectid)
+		[request.session['projects_select'].remove(projectid) for projectid in empty_project]
 	
 	if request.session['start_time_query'] != None:
 		results = results.filter(entry_date__gte=datetime.datetime.strptime(request.session['start_time_query'], '%m/%d/%Y'))
@@ -91,5 +103,17 @@ def query_results(request):
 	
 	total_time = results.aggregate(Sum('time_spent'))
 	total_items = results.aggregate(Sum('items_complete'))
+	#import pdb; pdb.set_trace()
 
-	return render(request, 'query_results.html', {'results': results, 'total_time':total_time, 'total_items':total_items, 'grouplist':grouplist})#
+	
+	try:
+		results[0]
+		request.session['results'] = [results.filter(project_ID_id=project).aggregate(Sum('time_spent'))['time_spent__sum']/total_time['time_spent__sum'] for project in request.session['projects_select']]
+	except IndexError:
+		pass
+	#import pdb; pdb.set_trace()
+
+	return render(request, 'query_results.html', {'results': results, 
+	'total_time':total_time, 
+	'total_items':total_items, 
+	'grouplist':grouplist})
