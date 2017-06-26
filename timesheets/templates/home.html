@@ -52,7 +52,7 @@
 			{% for entry in entrylist %}
             <tr>
                   <td>{{ entry.entry_date|date:"m/d/y" }}&nbsp;</td>
-                  <td align="center">{{ entry.project_ID.project_name }}</td>
+                  <td align="left">{{ entry.project_ID.client }}: {{ entry.project_ID.project_name }}</td>
                   <td align="center">{{ entry.items_complete }}</td>
                   <td align="center">{{ entry.time_spent }}</td>
             </tr>
